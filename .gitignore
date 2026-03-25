@@ -1,0 +1,14 @@
+# Fichiers cache Python
+__pycache__/
+*.pyc
+
+# Fichiers de données et de résultats
+*.xdmf
+*.h5
+*.vtu
+*.vtk
+
+# Environnements virtuels (si tu en as un dans le dossier)
+venv/
+env/
+.env

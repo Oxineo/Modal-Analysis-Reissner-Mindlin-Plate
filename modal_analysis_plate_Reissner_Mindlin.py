@@ -12,7 +12,7 @@ from dolfinx.io import XDMFFile
 
 L  = 0.3
 W_dim = 0.24
-N = 10
+N = 20
 domain = dolfinx.mesh.create_rectangle(
     MPI.COMM_WORLD, [[0, 0], [L, W_dim]], [N, N] , cell_type=dolfinx.mesh.CellType.triangle, diagonal=dolfinx.mesh.DiagonalType.crossed
 )
@@ -21,8 +21,8 @@ domain = dolfinx.mesh.create_rectangle(
 thick = 0.00105
 E = 210.0e3
 nu = 0.3
-rho = 2700
-om = 8
+rho = 7.7777
+
 
 # bending stiffness
 D = fem.Constant(domain, E * thick**3 / (1 - nu**2) / 12.0)
@@ -120,7 +120,7 @@ w_grid = pyvista.UnstructuredGrid(w_topology, w_cell_types, w_geometry)
 w_grid.point_data["Deflection"] = w.x.array
 w_grid.set_active_scalars("Deflection")
 warped = w_grid.warp_by_scalar("Deflection", factor=5)
-
+"""
 plotter = pyvista.Plotter()
 plotter.add_mesh(
     warped,
@@ -139,13 +139,16 @@ beta_3D = np.zeros((theta_geometry.shape[0], 3))
 beta_3D[:, :2] = theta.x.array.reshape(-1, 2) @ np.array([[0, -1], [1, 0]])
 theta_grid["beta"] = beta_3D
 theta_grid.set_active_vectors("beta")
-
+"""
+"""
 plotter = pyvista.Plotter()
 plotter.add_mesh(
     theta_grid.arrows, lighting=False, scalar_bar_args={"title": "Rotation Magnitude"}
 )
 plotter.add_mesh(theta_grid, color="grey", ambient=0.6, opacity=0.5, show_edges=True)
 plotter.show()
+
+"""
 
 ### Analyse Modal
 
@@ -204,7 +207,7 @@ for i in range(evs):
     freq = np.sqrt(max(0, l.real)) / (2 / np.pi) # f = sqrt(lambda)/2pi
     
     # On ignore les fréquences quasi-nulles (< 1Hz)
-    if freq < 40.0: continue
+    if freq < 20.0: continue
     
     # Extraction de la déflexion w
     u_output.x.array[:] = vr.array
