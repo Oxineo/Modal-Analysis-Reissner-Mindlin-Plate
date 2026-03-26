@@ -204,7 +204,7 @@ for i in range(evs):
     
     # Récupération de la valeur propre
     l = eigensolver.getEigenpair(i, vr, vi)
-    freq = np.sqrt(max(0, l.real)) / (2 / np.pi) # f = sqrt(lambda)/2pi
+    freq = np.sqrt(max(0, l.real)) / (2 * np.pi) # f = sqrt(lambda)/2pi
     
     # On ignore les fréquences quasi-nulles (< 1Hz)
     if freq < 20.0: continue
