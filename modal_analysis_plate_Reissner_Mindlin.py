@@ -120,7 +120,7 @@ w_grid = pyvista.UnstructuredGrid(w_topology, w_cell_types, w_geometry)
 w_grid.point_data["Deflection"] = w.x.array
 w_grid.set_active_scalars("Deflection")
 warped = w_grid.warp_by_scalar("Deflection", factor=5)
-"""
+
 plotter = pyvista.Plotter()
 plotter.add_mesh(
     warped,
@@ -148,7 +148,7 @@ plotter.add_mesh(
 plotter.add_mesh(theta_grid, color="grey", ambient=0.6, opacity=0.5, show_edges=True)
 plotter.show()
 
-"""
+
 
 ### Analyse Modal
 
