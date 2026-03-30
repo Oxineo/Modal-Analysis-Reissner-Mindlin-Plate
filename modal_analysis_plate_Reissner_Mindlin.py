@@ -24,6 +24,10 @@ nu = 0.3
 rho = 7.7777
 
 
+# residual stress
+sig0 = fem.Constant(domain, 100.0) # Residual stress in MPa (yy direction)
+
+
 # bending stiffness
 D = fem.Constant(domain, E * thick**3 / (1 - nu**2) / 12.0)
 # shear stiffness
@@ -73,6 +77,7 @@ u = fem.Function(V, name="Unknown")
 u_ = ufl.TestFunction(V)
 (w_, theta_) = ufl.split(u_)
 du = ufl.TrialFunction(V)
+(w, theta) = ufl.split(du)
 
 # Linear and bilinear forms
 dx = ufl.Measure("dx", domain=domain)
@@ -80,7 +85,7 @@ L = f * w_ * dx
 a = (
     ufl.dot(bending_moment(u_), curvature(du))
     + ufl.dot(shear_force(u_), shear_strain(du))
-    
+    + sig0 * w.dx(1) * w_.dx(1)
 ) * dx
 
 # Boundary of the plate
