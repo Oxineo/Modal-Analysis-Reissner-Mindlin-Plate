@@ -7,6 +7,7 @@ __pycache__/
 *.h5
 *.vtu
 *.vtk
+*.pvtu
 
 # Environnements virtuels (si tu en as un dans le dossier)
 venv/
