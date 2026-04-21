@@ -8,7 +8,7 @@ from scipy.interpolate import griddata
 
 
 
-map = scipy.io.loadmat('/home/adm-discohbot/Documents/Stage_Recherche_M2_Arthur/Modal-Analysis-Reissner-Mindlin-Plate/map_chaleur/bas_droite_sort.mat')
+map = scipy.io.loadmat('/home/adm-discohbot/Documents/Stage_Recherche_M2_Arthur/Modal-Analysis-Reissner-Mindlin-Plate/map_chaleur/central_droit_manip_21_04_2026.mat')
 
 frame = np.array(map['Frame'])
 
@@ -19,17 +19,17 @@ matplotlib.use('Qt5Agg')
 
 plt.figure(num = "Map Chaleur")
 
-plt.imshow(frame, cmap='jet', vmin=20, vmax=60)
+plt.imshow(frame, cmap='jet')
 plt.colorbar()
 plt.title("Carte de Chaleur")
 plt.xlabel("X")
 plt.ylabel("Y")
 plt.show(block = False)
 #%%
-p_00_plaque = np.array([63,52])
-p_10_plaque = np.array([74,437])
-p_11_plaque = np.array([554,424])
-p_01_plaque = np.array([545,34])
+p_00_plaque = np.array([155,38])
+p_10_plaque = np.array([156,417])
+p_11_plaque = np.array([468,374])
+p_01_plaque = np.array([463,55])
 
 
 ### Rognage de l'image pour n'afficher que la plaque
@@ -62,8 +62,8 @@ def carte_chaleur(frame , nx , ny) :
     return values
 
 #%%
-nx = 300
-ny = 400
+nx = 600
+ny = 600
 
 frame_rognee = carte_chaleur(frame, nx, ny)
 plt.figure(num = "Map Chaleur Rognée")
