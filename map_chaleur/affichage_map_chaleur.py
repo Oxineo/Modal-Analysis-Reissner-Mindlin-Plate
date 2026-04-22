@@ -8,7 +8,7 @@ from scipy.interpolate import griddata
 
 
 
-map = scipy.io.loadmat('/home/adm-discohbot/Documents/Stage_Recherche_M2_Arthur/Modal-Analysis-Reissner-Mindlin-Plate/map_chaleur/central_droit_manip_21_04_2026.mat')
+map = scipy.io.loadmat('/home/adm-discohbot/Documents/Stage_Recherche_M2_Arthur/Modal-Analysis-Reissner-Mindlin-Plate/map_chaleur/central_milieu_manip_21_04_2026.mat')
 
 frame = np.array(map['Frame'])
 
@@ -19,17 +19,17 @@ matplotlib.use('Qt5Agg')
 
 plt.figure(num = "Map Chaleur")
 
-plt.imshow(frame, cmap='jet')
+plt.imshow(frame, cmap='jet',vmax= 40)
 plt.colorbar()
 plt.title("Carte de Chaleur")
 plt.xlabel("X")
 plt.ylabel("Y")
 plt.show(block = False)
 #%%
-p_00_plaque = np.array([155,38])
-p_10_plaque = np.array([156,417])
-p_11_plaque = np.array([468,374])
-p_01_plaque = np.array([463,55])
+p_00_plaque = np.array([158,38])
+p_10_plaque = np.array([165,407])
+p_11_plaque = np.array([471,375])
+p_01_plaque = np.array([465,55])
 
 
 ### Rognage de l'image pour n'afficher que la plaque
