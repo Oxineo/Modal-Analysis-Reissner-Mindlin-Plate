@@ -8,9 +8,31 @@ from scipy.interpolate import griddata
 
 
 
-map = scipy.io.loadmat('/home/adm-discohbot/Documents/Stage_Recherche_M2_Arthur/Modal-Analysis-Reissner-Mindlin-Plate/map_chaleur/central_milieu_manip_21_04_2026.mat')
+map = scipy.io.loadmat('/home/adm-discohbot/Documents/Stage_Recherche_M2_Arthur/Modal-Analysis-Reissner-Mindlin-Plate/map_chaleur/manip_29_04_2026.mat')
+map_2 = scipy.io.loadmat('/home/adm-discohbot/Documents/Stage_Recherche_M2_Arthur/Modal-Analysis-Reissner-Mindlin-Plate/map_chaleur/manip_29_04_2026_35_150.mat')
+
+print(map.keys())
 
 frame = np.array(map['Frame'])
+frame_2 = np.array(map_2['Frame'])
+
+masque_temp_basse = frame < 35
+masque_temp_2_haute =  frame_2 > 55
+
+map_enl_basse = frame * masque_temp_basse
+map_enl_haute = frame_2 * masque_temp_2_haute
+
+map_avec_vide = map_enl_haute + map_enl_basse
+
+masque_map_travel = map_avec_vide == 0
+
+map_basse = frame * masque_map_travel
+map_basse_vide = np.abs(((map_basse) - np.max(map_basse  ))/np.max(map_basse)) * masque_map_travel 
+map_basse_vide = map_basse_vide / np.max(map_basse_vide)
+
+map_haute_vide = masque_map_travel-map_basse_vide
+
+map_merge = map_enl_haute + map_enl_basse + map_haute_vide * masque_map_travel * frame_2 + map_basse_vide * masque_map_travel * frame
 
 #%%
 import matplotlib
@@ -19,18 +41,17 @@ matplotlib.use('Qt5Agg')
 
 plt.figure(num = "Map Chaleur")
 
-plt.imshow(frame, cmap='jet',vmax= 40)
+plt.imshow(map_merge, cmap='jet')
 plt.colorbar()
 plt.title("Carte de Chaleur")
 plt.xlabel("X")
 plt.ylabel("Y")
 plt.show(block = False)
 #%%
-p_00_plaque = np.array([158,38])
-p_10_plaque = np.array([165,407])
-p_11_plaque = np.array([471,375])
-p_01_plaque = np.array([465,55])
-
+p_00_plaque = np.array([118,54])
+p_10_plaque = np.array([127,465])
+p_11_plaque = np.array([574,484])
+p_01_plaque = np.array([566,9])
 
 ### Rognage de l'image pour n'afficher que la plaque
 
@@ -65,17 +86,22 @@ def carte_chaleur(frame , nx , ny) :
 nx = 600
 ny = 600
 
-frame_rognee = carte_chaleur(frame, nx, ny)
+frame_rognee = carte_chaleur(map_merge, nx, ny)
 plt.figure(num = "Map Chaleur Rognée")
 plt.imshow(frame_rognee, cmap='hot')
 plt.colorbar()
 plt.title("Carte de Chaleur Rognée")
 plt.xlabel("X")
 plt.ylabel("Y")
-plt.show()
-
+plt.show(block = False)
 
 # %%
 
-#np.save('/home/adm-discohbot/Documents/Stage_Recherche_M2_Arthur/Modal-Analysis-Reissner-Mindlin-Plate/map_chaleur/central_bas_2.npy', frame_rognee)
+dic = { "Frame" : frame_rognee }
 
+scipy.io.savemat("/home/adm-discohbot/Documents/Stage_Recherche_M2_Arthur/Modal-Analysis-Reissner-Mindlin-Plate/map_chaleur/manip_29_04_r.mat" , dic)
+
+# np.save('/home/adm-discohbot/Documents/Stage_Recherche_M2_Arthur/Modal-Analysis-Reissner-Mindlin-Plate/map_chaleur/manip_29_04.npy', frame_rognee)
+
+
+# %%
